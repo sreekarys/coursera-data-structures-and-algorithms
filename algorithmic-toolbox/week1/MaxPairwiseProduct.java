@@ -2,16 +2,16 @@ import java.util.Scanner;
 
 public class MaxPairwiseProduct {
     private static long getMaxPairwiseProduct(long[] numbers) {
-	long max_product = 0;
-	int n = numbers.length;
-
-	for (int first = 0; first < n; ++first) {
-	    for (int second = first + 1; second < n; ++second) {
-		max_product = Math.max(max_product, numbers[first] * numbers[second]);
+	long max = 0, second_max = 0;
+	for (int i = 0; i < numbers.length; i++) {
+	    if (numbers[i] > max) {
+		second_max = max;
+		max = numbers[i];
+	    } else if (numbers[i] > second_max) {
+		second_max = numbers[i];
 	    }
 	}
-
-	return max_product;
+	return max * second_max;
     }
 
     public static void main(String[] args) {
