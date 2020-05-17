@@ -18,7 +18,10 @@ public class FibonacciPartialSum {
     private static int getFibonacciPartialSum(long m, long n) {
 	int mRemainder = (int) (m % PISANO_SERIES_10_PERIOD);
 	int nRemainder = (int) (n % PISANO_SERIES_10_PERIOD);
-	return partialSumPisanoSeries(mRemainder, nRemainder);
+
+	int mMinusOneSum = mRemainder == 0 ? 0 : partialSumPisanoSeries(0, mRemainder - 1);
+	int nSum = partialSumPisanoSeries(0, nRemainder);
+	return (nSum >= mMinusOneSum) ? (nSum - mMinusOneSum) : (10 + nSum - mMinusOneSum);
     }
 
     public static void main(String[] args) {
