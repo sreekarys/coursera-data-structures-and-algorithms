@@ -15,11 +15,12 @@ public class CoveringSegments {
 	    this.start = start;
 	    this.end = end;
 	}
+
     }
 
     private static int[] optimalPoints(Segment[] segments) {
 	List<Segment> segmentList = Arrays.stream(segments).collect(Collectors.toList());
-	Collections.sort(segmentList, Comparator.comparingInt(segment -> segment.end));
+	Collections.sort(segmentList, Comparator.comparingInt((Segment segment) -> segment.end));
 	int N = segmentList.size(), index = 1, current = segmentList.get(0).end;
 	List<Integer> result = new ArrayList<Integer>();
 	while (index < N) {
@@ -31,6 +32,9 @@ public class CoveringSegments {
 	    if (index < N)
 		current = segmentList.get(index).end;
 	    index++;
+
+	    if (index == N)
+		result.add(current);
 	}
 
 	return result.stream().mapToInt(i -> i).toArray();

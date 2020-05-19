@@ -8,7 +8,7 @@ public class Change {
 	for (int i = 0; i < SORTED_DENOMINATIONS.length; i++) {
 	    if (m <= 0)
 		return result;
-	    if (m > SORTED_DENOMINATIONS[i]) {
+	    if (m >= SORTED_DENOMINATIONS[i]) {
 		int q = m / SORTED_DENOMINATIONS[i];
 		m %= SORTED_DENOMINATIONS[i];
 		result += q;
