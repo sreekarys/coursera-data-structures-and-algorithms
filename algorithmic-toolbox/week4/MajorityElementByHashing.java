@@ -15,7 +15,7 @@ public class MajorityElementByHashing {
 	    int count = countMap.containsKey(a[i]) ? countMap.get(a[i]) : 0;
 	    count++;
 	    if (count > N / 2)
-		return 1;
+		return a[i];
 	    countMap.put(a[i], count);
 	}
 	return -1;

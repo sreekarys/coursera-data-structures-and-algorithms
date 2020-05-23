@@ -36,7 +36,7 @@ public class CountInversionsByMergeSort {
 	}
 
 	while (i < n) {
-	    a[k] = arr1[j];
+	    a[k] = arr1[i];
 	    countInversions += (n - i);
 	    k++;
 	    i++;
@@ -50,8 +50,8 @@ public class CountInversionsByMergeSort {
 	    return 0;
 	int mid = (left + right) / 2;
 	int countInversions = 0;
-	countInversions += mergeSort(a, left, mid);
-	countInversions += mergeSort(a, mid + 1, right);
+	mergeSort(a, left, mid);
+	mergeSort(a, mid + 1, right);
 	countInversions += merge(a, left, mid, right);
 	return countInversions;
     }

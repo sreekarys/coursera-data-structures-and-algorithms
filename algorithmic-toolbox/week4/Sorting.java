@@ -13,14 +13,19 @@ public class Sorting {
     private static int[] partition3(int[] a, int l, int r) {
 	int pivot = a[l], m1 = l, m2 = r;
 	for (int i = l; i <= r; i++) {
-	    if(a[i] < pivot) {
+	    if (a[i] < pivot) {
 		swap(a, m1, i);
 		m1++;
-	    } else if(a[i] > pivot) {
+	    }
+	}
+
+	for (int i = l; i <= r; i++) {
+	    if (a[i] > pivot) {
 		swap(a, m2, i);
 		m2--;
 	    }
 	}
+
 	int[] m = { m1, m2 };
 	return m;
     }

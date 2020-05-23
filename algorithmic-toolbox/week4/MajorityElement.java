@@ -6,18 +6,9 @@ import java.util.Scanner;
  * O(1) extra space, other than stack space used for recursion
  */
 public class MajorityElement {
-    private static int getMajorityElement(int[] a, int left, int right) {
-	if (left == right)
+    private static int countMajorityForACandidate(int a[], int left, int right, int majorityCandidate) {
+	if (majorityCandidate == -1)
 	    return -1;
-	if (right - left == 1)
-	    return a[left] == a[right] ? a[left] : -1;
-
-	int mid = (left + right) / 2;
-	int leftMajority = getMajorityElement(a, left, mid - 1);
-	int rightMajority = getMajorityElement(a, mid + 1, right);
-	if (leftMajority == rightMajority)
-	    return leftMajority;
-	int majorityCandidate = leftMajority == -1 ? rightMajority : leftMajority;
 	int countMajorityCandidate = 0;
 	for (int i = left; i <= right; i++) {
 	    if (a[i] == majorityCandidate)
@@ -26,6 +17,24 @@ public class MajorityElement {
 		return majorityCandidate;
 	}
 	return -1;
+    }
+
+    private static int getMajorityElement(int[] a, int left, int right) {
+	if (left == right)
+	    return a[left];
+	if (right - left == 1)
+	    return a[left] == a[right] ? a[left] : -1;
+
+	int mid = (left + right) / 2;
+	int leftMajority = getMajorityElement(a, left, mid);
+	int rightMajority = getMajorityElement(a, mid + 1, right);
+	if (leftMajority == rightMajority)
+	    return leftMajority;
+	int majorityCandidate = countMajorityForACandidate(a, left, right, leftMajority);
+	if (majorityCandidate == -1) {
+	    majorityCandidate = countMajorityForACandidate(a, left, right, rightMajority);
+	}
+	return majorityCandidate;
     }
 
     public static void main(String[] args) {
