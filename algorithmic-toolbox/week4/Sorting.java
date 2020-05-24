@@ -11,7 +11,7 @@ public class Sorting {
     }
 
     private static int[] partition3(int[] a, int l, int r) {
-	int pivot = a[l], m1 = l, m2 = r;
+	int pivot = a[l], m1 = l + 1, m2 = r;
 	for (int i = l; i <= r; i++) {
 	    if (a[i] < pivot) {
 		swap(a, m1, i);

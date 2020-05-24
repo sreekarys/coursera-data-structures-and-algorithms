@@ -13,7 +13,7 @@ public class MajorityElement {
 	for (int i = left; i <= right; i++) {
 	    if (a[i] == majorityCandidate)
 		countMajorityCandidate++;
-	    if (countMajorityCandidate > Math.ceil((right - left) / 2))
+	    if (countMajorityCandidate > Math.ceil((double)(right - left) / 2))
 		return majorityCandidate;
 	}
 	return -1;

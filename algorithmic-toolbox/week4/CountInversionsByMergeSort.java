@@ -18,28 +18,19 @@ public class CountInversionsByMergeSort {
 	int i = 0, j = 0, k = left, countInversions = 0;
 	while (i < n && j < m) {
 	    if (arr1[i] > arr2[j]) {
-		a[k] = arr2[j];
+		a[k++] = arr2[j++];
 		countInversions += (n - i);
-		k++;
-		j++;
 	    } else {
-		a[k] = arr1[i];
-		k++;
-		i++;
+		a[k++] = arr1[i++];
 	    }
 	}
 
 	while (j < m) {
-	    a[k] = arr2[j];
-	    k++;
-	    j++;
+	    a[k++] = arr2[j++];
 	}
 
 	while (i < n) {
-	    a[k] = arr1[i];
-	    countInversions += (n - i);
-	    k++;
-	    i++;
+	    a[k++] = arr1[i++];
 	}
 
 	return countInversions;
@@ -50,8 +41,8 @@ public class CountInversionsByMergeSort {
 	    return 0;
 	int mid = (left + right) / 2;
 	int countInversions = 0;
-	mergeSort(a, left, mid);
-	mergeSort(a, mid + 1, right);
+	countInversions += mergeSort(a, left, mid);
+	countInversions += mergeSort(a, mid + 1, right);
 	countInversions += merge(a, left, mid, right);
 	return countInversions;
     }
