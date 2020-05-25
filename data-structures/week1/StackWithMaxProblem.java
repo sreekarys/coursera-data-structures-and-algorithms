@@ -4,6 +4,9 @@ import java.util.List;
 import java.util.Scanner;
 import java.util.Stack;
 
+/*
+ * push, pop, max - O(1) time, O(n) extra space
+ */
 public class StackWithMaxProblem {
 
     public static void main(String[] args) throws IOException {

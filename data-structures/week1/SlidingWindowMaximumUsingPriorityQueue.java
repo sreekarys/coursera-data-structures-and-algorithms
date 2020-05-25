@@ -3,6 +3,10 @@ import java.util.Comparator;
 import java.util.PriorityQueue;
 import java.util.Scanner;
 
+/*
+ * O(NlogM) time - remove operation on the priority queue is logM
+ * (M) extra space for the priority queue
+ */
 public class SlidingWindowMaximumUsingPriorityQueue {
     public static void main(String[] args) {
 	Scanner in = new Scanner(System.in);

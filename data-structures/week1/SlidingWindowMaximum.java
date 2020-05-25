@@ -1,6 +1,13 @@
 import java.util.Scanner;
 import java.util.Stack;
 
+/*
+ * O(n) time amortized - the dequeue operation on the queue using two stacks looks like O(n),
+ * but only when auxiliary stack is empty, we copy the elements from stack to auxiliary stack,
+ * hence on an average, the dequeue operation is constant. The same won't be possible if make
+ * enqueue operation fat!!!
+ * O(n) extra space
+ */
 public class SlidingWindowMaximum {
 
     public static void main(String[] args) {

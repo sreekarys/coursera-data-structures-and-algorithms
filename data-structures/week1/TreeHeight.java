@@ -4,6 +4,10 @@ import java.util.List;
 import java.util.Queue;
 import java.util.Scanner;
 
+/*
+ * BFS - O(n) time, O(n) extra space for queue
+ * DFS - O(n) time and stack space for recursion 
+ */
 public class TreeHeight {
     public static void main(String[] args) {
 	Scanner in = new Scanner(System.in);

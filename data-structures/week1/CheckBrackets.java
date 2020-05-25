@@ -1,6 +1,8 @@
 import java.util.Scanner;
 import java.util.Stack;
-
+/*
+ * O(n) time, O(n) extra space
+ */
 public class CheckBrackets {
     private static boolean matchBrackets(char a, char b) {
 	return a == '(' ? b == ')' : (a == '[' ? b == ']' : (a == '{' ? b == '}' : false));
