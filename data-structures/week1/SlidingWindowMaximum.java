@@ -32,63 +32,61 @@ public class SlidingWindowMaximum {
     }
 
     static class MyQueue {
-	private static final Stack<Integer> AUXILIARY_STACK = new Stack<>();
-	private static final MaxStack MAX_STACK = new MaxStack();
+	private final MaxStack auxiliaryStack = new MaxStack();
+	private final MaxStack stack = new MaxStack();
 
 	public void enqueue(int operand) {
-	    while (!MAX_STACK.empty()) {
-		AUXILIARY_STACK.push(MAX_STACK.peek());
-		MAX_STACK.pop();
-	    }
-
-	    MAX_STACK.push(operand);
-
-	    while (!AUXILIARY_STACK.empty()) {
-		MAX_STACK.push(AUXILIARY_STACK.pop());
-	    }
+	    stack.push(operand);
 	}
 
 	public int dequeue() {
-	    int earliest = MAX_STACK.peek();
-	    MAX_STACK.pop();
+	    if (auxiliaryStack.empty()) {
+		while (!stack.empty()) {
+		    auxiliaryStack.push(stack.peek());
+		    stack.pop();
+		}
+	    }
+	    int earliest = auxiliaryStack.peek();
+	    auxiliaryStack.pop();
 	    return earliest;
 	}
 
 	public int max() {
-	    return MAX_STACK.max();
+	    int a = stack.max(), b = auxiliaryStack.empty() ? Integer.MIN_VALUE : auxiliaryStack.max();
+	    return a > b ? a : b;
 	}
     }
 
     static class MaxStack {
-	private static final Stack<Integer> STACK = new Stack<>();
-	private static final Stack<Integer> AUXILIARY_STACK = new Stack<>();
+	private final Stack<Integer> mainStack = new Stack<>();
+	private final Stack<Integer> auxiliaryStack = new Stack<>();
 
 	public void push(int operand) {
-	    STACK.push(operand);
-	    if (AUXILIARY_STACK.empty() || operand >= AUXILIARY_STACK.peek()) {
-		AUXILIARY_STACK.push(operand);
+	    mainStack.push(operand);
+	    if (auxiliaryStack.empty() || operand >= auxiliaryStack.peek()) {
+		auxiliaryStack.push(operand);
 	    }
 	}
 
 	public void pop() {
-	    if (!STACK.empty()) {
-		int latest = STACK.pop();
-		if (AUXILIARY_STACK.peek() == latest) {
-		    AUXILIARY_STACK.pop();
+	    if (!mainStack.empty()) {
+		int latest = mainStack.pop();
+		if (auxiliaryStack.peek() == latest) {
+		    auxiliaryStack.pop();
 		}
 	    }
 	}
 
 	public int peek() {
-	    return STACK.peek();
+	    return mainStack.peek();
 	}
 
 	public boolean empty() {
-	    return STACK.empty();
+	    return mainStack.empty();
 	}
 
 	public int max() {
-	    return AUXILIARY_STACK.peek();
+	    return auxiliaryStack.peek();
 	}
     }
 }

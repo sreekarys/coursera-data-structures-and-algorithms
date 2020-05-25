@@ -1,5 +1,7 @@
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Queue;
 import java.util.Scanner;
 
 public class TreeHeight {
@@ -12,16 +14,49 @@ public class TreeHeight {
 	}
 
 	Node root = constructTree(a, N);
-	System.out.println(calculateHeight(root));
+	System.out.println(calculateHeightBFS(root));
 	in.close();
     }
 
-    private static int calculateHeight(Node root) {
+    private static int calculateHeightBFS(Node root) {
+	if (root == null)
+	    return 0;
+
+	int height = 0;
+	Queue<Node> q1 = new LinkedList<>(), q2 = new LinkedList<>();
+	q1.add(root);
+	while (!q1.isEmpty() || !q2.isEmpty()) {
+	    if (!q1.isEmpty()) {
+		height++;
+	    }
+
+	    while (!q1.isEmpty()) {
+		Node n = q1.poll();
+		for (Node child : n.children) {
+		    q2.add(child);
+		}
+	    }
+
+	    if (!q2.isEmpty()) {
+		height++;
+	    }
+
+	    while (!q2.isEmpty()) {
+		Node n = q2.poll();
+		for (Node child : n.children) {
+		    q1.add(child);
+		}
+	    }
+	}
+	return height;
+    }
+
+    private static int calculateHeightDFS(Node root) {
 	if (root == null)
 	    return 0;
 	int maxHeightAmongChildren = 0;
 	for (Node child : root.children) {
-	    int heightOfChild = calculateHeight(child);
+	    int heightOfChild = calculateHeightDFS(child);
 	    if (heightOfChild > maxHeightAmongChildren)
 		maxHeightAmongChildren = heightOfChild;
 	}
