@@ -30,7 +30,7 @@ public class MergingTables {
 
     static class DisjointSet {
 	int[] parent, setSize, rank;
-	int capacity;
+	int capacity, maxSizeOfSet;
 
 	public DisjointSet(int capacity) {
 	    this.capacity = capacity;
@@ -43,6 +43,8 @@ public class MergingTables {
 	    parent[index] = index;
 	    setSize[index] = size;
 	    rank[index] = 0;
+	    if (size > maxSizeOfSet)
+		maxSizeOfSet = size;
 	}
 
 	public int find(int index) {
@@ -60,22 +62,22 @@ public class MergingTables {
 		parent[parentI] = parentJ;
 		setSize[parentJ] += setSize[parentI];
 		setSize[parentI] = 0;
+		if (setSize[parentJ] > maxSizeOfSet)
+		    maxSizeOfSet = setSize[parentJ];
 		if (rank[parentI] == rank[parentJ])
 		    rank[parentJ]++;
 	    } else {
 		parent[parentJ] = parentI;
 		setSize[parentI] += setSize[parentJ];
 		setSize[parentJ] = 0;
+		if (setSize[parentI] > maxSizeOfSet)
+		    maxSizeOfSet = setSize[parentI];
 	    }
 	}
 
 	public int getMaxSize() {
-	    int max = Integer.MIN_VALUE;
-	    for (int i = 0; i < setSize.length; i++) {
-		if (max < setSize[i])
-		    max = setSize[i];
-	    }
-	    return max;
+	    return maxSizeOfSet;
 	}
     }
+
 }
