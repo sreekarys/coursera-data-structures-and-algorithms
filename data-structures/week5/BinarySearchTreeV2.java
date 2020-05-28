@@ -46,9 +46,11 @@ public class BinarySearchTreeV2 {
     }
 
     private static boolean find(Node root, Node n) {
-	if (root.equals(n))
-	    return true;
-	return root.val <= n.val ? find(root.right, n) : find(root.left, n);
+	while (root != null && !root.equals(n)) {
+	    root = root.left;
+	}
+
+	return root != null;
     }
 
     private static List<Node> inOrderTraversal(Node root) {
