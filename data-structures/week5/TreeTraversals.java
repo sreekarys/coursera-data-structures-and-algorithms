@@ -1,4 +1,5 @@
 import java.util.Scanner;
+import java.util.Stack;
 
 public class TreeTraversals {
 
@@ -19,37 +20,82 @@ public class TreeTraversals {
 	    n.right = right == -1 ? null : nodes[right];
 	}
 
-	inOrder(nodes[0]);
+	iterativeInOrderTrversal(nodes[0]);
 	System.out.println();
-	preOrder(nodes[0]);
+	iterativePreOrderTrversal(nodes[0]);
 	System.out.println();
-	postOrder(nodes[0]);
+	iterativePostOrderTrversal(nodes[0]);
 	System.out.println();
 	in.close();
     }
 
-    private static void inOrder(Node root) {
+    private static void inOrderTraversal(Node root) {
 	if (root == null)
 	    return;
-	inOrder(root.left);
+	inOrderTraversal(root.left);
 	System.out.print(root.val + " ");
-	inOrder(root.right);
+	inOrderTraversal(root.right);
     }
 
-    private static void preOrder(Node root) {
-	if (root == null)
-	    return;
-	System.out.print(root.val + " ");
-	preOrder(root.left);
-	preOrder(root.right);
+    private static void iterativeInOrderTrversal(Node root) {
+	Node curr = root;
+	Stack<Node> stack = new Stack<>();
+	while (curr != null || !stack.empty()) {
+	    while (curr != null) {
+		stack.push(curr);
+		curr = curr.left;
+	    }
+
+	    curr = stack.pop();
+	    System.out.print(curr.val + " ");
+	    curr = curr.right;
+	}
     }
 
-    private static void postOrder(Node root) {
+    private static void preOrderTraversal(Node root) {
 	if (root == null)
 	    return;
-	postOrder(root.left);
-	postOrder(root.right);
 	System.out.print(root.val + " ");
+	preOrderTraversal(root.left);
+	preOrderTraversal(root.right);
+    }
+
+    private static void iterativePreOrderTrversal(Node root) {
+	Node curr = root;
+	Stack<Node> stack = new Stack<>();
+	while (curr != null) {
+	    System.out.print(curr.val + " ");
+	    if (curr.right != null)
+		stack.push(curr.right);
+	    if (curr.left != null)
+		stack.push(curr.left);
+	    curr = stack.empty() ? null : stack.pop();
+	}
+    }
+
+    private static void postOrderTraversal(Node root) {
+	if (root == null)
+	    return;
+	postOrderTraversal(root.left);
+	postOrderTraversal(root.right);
+	System.out.print(root.val + " ");
+    }
+
+    private static void iterativePostOrderTrversal(Node root) {
+	Stack<Node> stack = new Stack<>(), auxiliaryStack = new Stack<>();
+	Node curr;
+	stack.push(root);
+	while (!stack.empty()) {
+	    curr = stack.pop();
+	    auxiliaryStack.push(curr);
+	    if (curr.left != null)
+		stack.push(curr.left);
+	    if (curr.right != null)
+		stack.push(curr.right);
+	}
+	while (!auxiliaryStack.empty()) {
+	    System.out.print(auxiliaryStack.pop().val + " ");
+	}
     }
 
     static class Node {

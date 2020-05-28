@@ -1,11 +1,17 @@
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
+import java.util.Stack;
 
 public class BinarySearchTreeV1 {
     public static void main(String[] args) {
 	Scanner in = new Scanner(System.in);
 	int N = in.nextInt();
+	if (N == 0) {
+	    System.out.println("CORRECT");
+	    in.close();
+	    return;
+	}
 	Node[] nodes = new Node[N];
 	for (int i = 0; i < N; i++) {
 	    nodes[i] = new Node();
@@ -21,10 +27,9 @@ public class BinarySearchTreeV1 {
 	}
 	in.close();
 
-	List<Integer> inOrder = new ArrayList<>();
-	inOrder(nodes[0], inOrder);
+	List<Node> inOrder = inOrderTraversal(nodes[0]);
 	for (int i = 0; i < inOrder.size() - 1; i++) {
-	    if (inOrder.get(i) >= inOrder.get(i + 1)) {
+	    if (inOrder.get(i).val >= inOrder.get(i + 1).val) {
 		System.out.println("INCORRECT");
 		return;
 	    }
@@ -32,12 +37,21 @@ public class BinarySearchTreeV1 {
 	System.out.println("CORRECT");
     }
 
-    private static void inOrder(Node root, List<Integer> inOrder) {
-	if (root == null)
-	    return;
-	inOrder(root.left, inOrder);
-	inOrder.add(root.val);
-	inOrder(root.right, inOrder);
+    private static List<Node> inOrderTraversal(Node root) {
+	List<Node> inOrder = new ArrayList<>();
+	Node curr = root;
+	Stack<Node> stack = new Stack<>();
+	while (curr != null || !stack.empty()) {
+	    while (curr != null) {
+		stack.push(curr);
+		curr = curr.left;
+	    }
+
+	    curr = stack.pop();
+	    inOrder.add(curr);
+	    curr = curr.right;
+	}
+	return inOrder;
     }
 
     static class Node {
