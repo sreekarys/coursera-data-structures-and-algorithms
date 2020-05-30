@@ -41,12 +41,11 @@ public class BipartiteGraph {
 	COLOR[] colorsOfVertices = new COLOR[V];
 	Arrays.fill(colorsOfVertices, COLOR.GREY);
 
-	int result = 1;
 	for (int i = 0; i < V; i++) {
-	    if (colorsOfVertices[i] == COLOR.GREY)
-		result *= isBipartite(adj, colorsOfVertices, i);
+	    if (colorsOfVertices[i] == COLOR.GREY && isBipartite(adj, colorsOfVertices, i) == 0)
+		return 0;
 	}
-	return result;
+	return 1;
     }
 
     private static int isBipartite(List<Set<Integer>> adj, COLOR[] colorsOfVertices, int source) {
