@@ -7,9 +7,6 @@ public class DetectNegativeCycles {
 	int n = scanner.nextInt();
 	int m = scanner.nextInt();
 	int[][] weights = new int[n][n];
-	for (int i = 0; i < n; i++) {
-	    Arrays.fill(weights[i], Integer.MAX_VALUE);
-	}
 	for (int i = 0; i < m; i++) {
 	    int start = scanner.nextInt(), end = scanner.nextInt(), weight = scanner.nextInt();
 	    weights[start - 1][end - 1] = weight;
@@ -27,8 +24,7 @@ public class DetectNegativeCycles {
 	    int numberOfRelaxations = 0;
 	    for (int j = 0; j < V; j++) {
 		for (int k = 0; k < V; k++) {
-		    if (weights[j][k] != Integer.MAX_VALUE && distance[j] != Integer.MAX_VALUE
-			    && distance[k] > distance[j] + weights[j][k]) {
+		    if (distance[j] != Integer.MAX_VALUE && distance[k] > distance[j] + weights[j][k]) {
 			distance[k] = distance[j] + weights[j][k];
 			numberOfRelaxations++;
 		    }
