@@ -37,9 +37,19 @@ public class BipartiteGraph {
     }
 
     private static int isBipartite(List<Set<Integer>> adj) {
-	int V = adj.size(), source = 0;
+	int V = adj.size();
 	COLOR[] colorsOfVertices = new COLOR[V];
 	Arrays.fill(colorsOfVertices, COLOR.GREY);
+
+	int result = 1;
+	for (int i = 0; i < V; i++) {
+	    if (colorsOfVertices[i] == COLOR.GREY)
+		result *= isBipartite(adj, colorsOfVertices, i);
+	}
+	return result;
+    }
+
+    private static int isBipartite(List<Set<Integer>> adj, COLOR[] colorsOfVertices, int source) {
 	Queue<Integer> queue = new LinkedList<>();
 	queue.add(source);
 	colorsOfVertices[source] = COLOR.WHITE;
@@ -53,9 +63,9 @@ public class BipartiteGraph {
 	    }
 	}
 
-	for (int i = 0; i < V; i++) {
+	for (int i = 0; i < adj.size(); i++) {
 	    for (Integer neighbour : adj.get(i)) {
-		if (colorsOfVertices[i] == colorsOfVertices[neighbour])
+		if (colorsOfVertices[i] == colorsOfVertices[neighbour] && colorsOfVertices[i] != COLOR.GREY)
 		    return 0;
 	    }
 	}
