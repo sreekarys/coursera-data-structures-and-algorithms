@@ -45,10 +45,9 @@ public class DijkstraUsingPriorityQueue {
 	    Vertex optimalVertex = unKnownRegion.poll();
 	    int v = optimalVertex.getIndex();
 	    distance[v] = optimalVertex.getDistance();
-	    Set<Integer> neighboursV = adjacencyList.get(v);
-	    if (neighboursV.isEmpty())
+	    if (distance[v] == Integer.MAX_VALUE)
 		break;
-
+	    Set<Integer> neighboursV = adjacencyList.get(v);
 	    for (Integer neighbourV : neighboursV) {
 		if (distance[neighbourV] > distance[v] + weights[v][neighbourV]) {
 		    distance[neighbourV] = distance[v] + weights[v][neighbourV];
