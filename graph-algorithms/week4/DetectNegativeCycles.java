@@ -1,4 +1,6 @@
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Scanner;
 
 public class DetectNegativeCycles {
@@ -6,34 +8,42 @@ public class DetectNegativeCycles {
 	Scanner scanner = new Scanner(System.in);
 	int n = scanner.nextInt();
 	int m = scanner.nextInt();
-	int[][] weights = new int[n][n];
+	List<Edge> edges = new ArrayList<>();
 	for (int i = 0; i < m; i++) {
 	    int start = scanner.nextInt(), end = scanner.nextInt(), weight = scanner.nextInt();
-	    weights[start - 1][end - 1] = weight;
+	    edges.add(new Edge(start - 1, end - 1, weight));
 	}
-	System.out.println(detectNegativeCycles(0, weights));
+	System.out.println(detectNegativeCycles(0, n, edges));
 	scanner.close();
     }
 
-    private static int detectNegativeCycles(int source, int[][] weights) {
-	int V = weights.length;
+    private static int detectNegativeCycles(int source, int V, List<Edge> edges) {
 	int[] distance = new int[V];
 	Arrays.fill(distance, Integer.MAX_VALUE);
 	distance[source] = 0;
 	for (int i = 0; i < V; i++) {
 	    int numberOfRelaxations = 0;
-	    for (int j = 0; j < V; j++) {
-		for (int k = 0; k < V; k++) {
-		    if (distance[j] != Integer.MAX_VALUE && distance[k] > distance[j] + weights[j][k]) {
-			distance[k] = distance[j] + weights[j][k];
-			numberOfRelaxations++;
-		    }
+	    for (Edge edge : edges) {
+		if (distance[edge.start] != Integer.MAX_VALUE
+			&& distance[edge.end] > distance[edge.start] + edge.weight) {
+		    distance[edge.end] = distance[edge.start] + edge.weight;
+		    numberOfRelaxations++;
 		}
 	    }
 	    if (numberOfRelaxations == 0)
 		return 0;
 	}
 	return 1;
+    }
+
+    static class Edge {
+	int start, end, weight;
+
+	public Edge(int start, int end, int weight) {
+	    this.start = start;
+	    this.end = end;
+	    this.weight = weight;
+	}
     }
 
 }
