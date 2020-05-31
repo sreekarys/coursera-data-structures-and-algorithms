@@ -1,7 +1,9 @@
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Queue;
 import java.util.Scanner;
 import java.util.Set;
 
@@ -36,17 +38,14 @@ public class OptimalMoneyExchange {
 		return;
 	}
 
-	int updateOnLastIteration = relax(distance, prev, edges);
-	if (updateOnLastIteration == Integer.MAX_VALUE)
+	int vertexReachableFromNegativeCycle = relax(distance, prev, edges);
+	if (vertexReachableFromNegativeCycle == Integer.MAX_VALUE)
 	    return;
 
-	int current = updateOnLastIteration;
-	Set<Integer> negativeCycle = new HashSet<>();
-	do {
-	    negativeCycle.add(current);
-	    current = prev[current];
-	} while (current != updateOnLastIteration);
-	negativeCycle.stream().forEach(i -> distance[i] = Integer.MIN_VALUE);
+	int vertexOfNegativeCycle = getVertexOfNegativeCycle(vertexReachableFromNegativeCycle, V, prev);
+	Set<Integer> negativeCycle = getNegativeCycle(vertexOfNegativeCycle, prev);
+	Set<Integer> reachableFromNegativeCycle = getReachableFromNegativeCycle(negativeCycle, edges);
+	reachableFromNegativeCycle.stream().forEach(i -> distance[i] = Integer.MIN_VALUE);
     }
 
     private static int relax(int[] distance, int[] prev, List<Edge> edges) {
@@ -59,6 +58,40 @@ public class OptimalMoneyExchange {
 	    }
 	}
 	return updatedOnLastIteration;
+    }
+
+    private static int getVertexOfNegativeCycle(int vertexReachableFromNegativeCycle, int V, int[] prev) {
+	int index = 0;
+	while (index < V) {
+	    vertexReachableFromNegativeCycle = prev[vertexReachableFromNegativeCycle];
+	    index++;
+	}
+	return vertexReachableFromNegativeCycle;
+    }
+
+    private static Set<Integer> getNegativeCycle(int vertexOfNegativeCycle, int[] prev) {
+	int current = vertexOfNegativeCycle;
+	Set<Integer> negativeCycle = new HashSet<>();
+	do {
+	    negativeCycle.add(current);
+	    current = prev[current];
+	} while (current != vertexOfNegativeCycle);
+	return negativeCycle;
+    }
+
+    private static Set<Integer> getReachableFromNegativeCycle(Set<Integer> negativeCycle, List<Edge> edges) {
+	Set<Integer> reachableFromNegativeCycle = new HashSet<>();
+	Queue<Integer> q = new LinkedList<>();
+	negativeCycle.stream().forEach(v -> q.add(v));
+	while (!q.isEmpty()) {
+	    int vertex = q.poll();
+	    reachableFromNegativeCycle.add(vertex);
+	    for (Edge edge : edges) {
+		if (edge.start == vertex && !reachableFromNegativeCycle.contains(edge.end))
+		    q.add(edge.end);
+	    }
+	}
+	return reachableFromNegativeCycle;
     }
 
     static class Edge {
