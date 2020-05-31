@@ -34,30 +34,35 @@ public class OptimalMoneyExchange {
 	int[] prev = new int[V];
 	Arrays.fill(prev, Integer.MAX_VALUE);
 	for (int i = 0; i < V - 1; i++) {
-	    if (relax(distance, prev, edges) == Integer.MAX_VALUE)
+	    if (relax(distance, prev, edges).isEmpty())
 		return;
 	}
 
-	int vertexReachableFromNegativeCycle = relax(distance, prev, edges);
-	if (vertexReachableFromNegativeCycle == Integer.MAX_VALUE)
+	Set<Integer> verticesUpdatedOnLastIteration = relax(distance, prev, edges);
+	if (verticesUpdatedOnLastIteration.isEmpty())
 	    return;
 
-	int vertexOfNegativeCycle = getVertexOfNegativeCycle(vertexReachableFromNegativeCycle, V, prev);
-	Set<Integer> negativeCycle = getNegativeCycle(vertexOfNegativeCycle, prev);
-	Set<Integer> reachableFromNegativeCycle = getReachableFromNegativeCycle(negativeCycle, edges);
+	Set<Integer> verticesOfNegativeCycle = new HashSet<>();
+	verticesUpdatedOnLastIteration.forEach(vertexUpdatedOnLastIteration -> verticesOfNegativeCycle
+		.add(getVertexOfNegativeCycle(vertexUpdatedOnLastIteration, V, prev)));
+
+	Set<Integer> allNegativeCycles = new HashSet<>();
+	verticesOfNegativeCycle.forEach(
+		vertexOfNegativeCycle -> allNegativeCycles.addAll(getNegativeCycle(vertexOfNegativeCycle, prev)));
+	Set<Integer> reachableFromNegativeCycle = getReachableFromNegativeCycle(allNegativeCycles, edges);
 	reachableFromNegativeCycle.stream().forEach(i -> distance[i] = Integer.MIN_VALUE);
     }
 
-    private static int relax(int[] distance, int[] prev, List<Edge> edges) {
-	int updatedOnLastIteration = Integer.MAX_VALUE;
+    private static Set<Integer> relax(int[] distance, int[] prev, List<Edge> edges) {
+	Set<Integer> updatedVertices = new HashSet<>();
 	for (Edge edge : edges) {
 	    if (distance[edge.start] != Integer.MAX_VALUE && distance[edge.end] > distance[edge.start] + edge.weight) {
-		updatedOnLastIteration = edge.end;
 		distance[edge.end] = distance[edge.start] + edge.weight;
 		prev[edge.end] = edge.start;
+		updatedVertices.add(edge.end);
 	    }
 	}
-	return updatedOnLastIteration;
+	return updatedVertices;
     }
 
     private static int getVertexOfNegativeCycle(int vertexReachableFromNegativeCycle, int V, int[] prev) {
